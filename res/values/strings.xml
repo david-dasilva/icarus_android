@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Icarus</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="sensor_test">Test des capteurs disponibles</string>
+    <string name="accelerometer">Accelerometre</string>
+    <string name="gravity">Gravité</string>
+    <string name="gyroscope">Gyroscope</string>
+    <string name="linear_acceleration">Acceleration linéaire</string>
+    <string name="magnetic_field">Champ magnetique</string>
+    <string name="orientation">Orientation</string>
+    <string name="pressure">Pression</string>
+    <string name="rotation_vector">Vecteur de rotation</string>
+
+</resources>

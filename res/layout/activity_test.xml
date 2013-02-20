@@ -1,0 +1,98 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TestActivity" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:text="@string/sensor_test"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <CheckBox
+        android:id="@+id/AccelerometerCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="26dp"
+        android:checked="false"
+        android:enabled="false"
+        android:text="@string/accelerometer" />
+
+    <CheckBox
+        android:id="@+id/LinearAccelerationCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/AccelerometerCheckBox"
+        android:checked="false"
+        android:enabled="false"
+        android:text="@string/linear_acceleration" />
+
+    <CheckBox
+        android:id="@+id/GyroscopeCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/LinearAccelerationCheck"
+        android:checked="false"
+        android:enabled="false"
+        android:text="@string/gyroscope" />
+
+    <CheckBox
+        android:id="@+id/GravityCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/GyroscopeCheck"
+        android:checked="false"
+        android:enabled="false"
+        android:text="@string/gravity" />
+
+    <CheckBox
+        android:id="@+id/MagneticFieldCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/GravityCheck"
+        android:checked="false"
+        android:enabled="false"
+        android:text="@string/magnetic_field" />
+
+    <CheckBox
+        android:id="@+id/PressureCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MagneticFieldCheck"
+        android:checked="false"
+        android:enabled="false"
+        android:text="@string/pressure" />
+
+    <CheckBox
+        android:id="@+id/RotationVectorCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/PressureCheck"
+        android:checked="false"
+        android:enabled="false"
+        android:text="@string/rotation_vector" />
+
+    <CheckBox
+        android:id="@+id/OrientationCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/RotationVectorCheck"
+        android:checked="false"
+        android:enabled="false"
+        android:text="@string/orientation" />
+
+</RelativeLayout>
