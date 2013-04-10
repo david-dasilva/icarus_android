@@ -13,5 +13,12 @@
     <string name="orientation">Orientation</string>
     <string name="pressure">Pression</string>
     <string name="rotation_vector">Vecteur de rotation</string>
+    <string name="valeurs">Valeurs</string>
+    <string name="title_activity_test_values">TestValuesActivity</string>
+    <string name="menu_capteurs">Capteurs</string>
+    <string name="menu_valeurs">Valeurs</string>
+    <string name="axeX">Axe X</string>
+    <string name="axeY">Axe Y</string>
+    <string name="axeZ">Axe Z</string>
 
 </resources>

@@ -8,15 +8,18 @@
  */
 package fr.unice.miage.icarus;
 
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Context;
-import android.view.Menu;
+import android.content.Intent;
 import android.widget.CheckBox;
 
-public class TestActivity extends Activity {
+public class TestActivity extends SherlockActivity {
 
 	private SensorManager sm;
 	
@@ -74,7 +77,27 @@ public class TestActivity extends Activity {
 		
 	}
 	
-	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch (item.getItemId()) {
+        case android.R.id.home:
+            // app icon in action bar clicked; go home
+            Intent intent = new Intent(this, TestActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return true;     
+        case R.id.menu_capteur:
+        	Intent intent2 = new Intent(this, TestActivity.class);
+        	startActivity(intent2);
+        	return true;   
+        case R.id.menu_valeurs:
+        	Intent intent3 = new Intent(this, TestValuesActivity.class);
+        	startActivity(intent3);
+        	return true;
+        default:
+            return super.onOptionsItemSelected(item);
+		}
+	}
 	
 	
 	
@@ -84,13 +107,15 @@ public class TestActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_test);
 		
+		getSupportActionBar().setHomeButtonEnabled(true);
+		
 		checkSensorAvailability();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_test, menu);
+		getSupportMenuInflater().inflate(R.menu.activity_test, menu);
 		return true;
 	}
 
