@@ -4,6 +4,9 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.CheckBox;
@@ -16,7 +19,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-public class TestValuesActivity extends SherlockActivity implements SensorEventListener{
+public class TestValuesActivity extends SherlockActivity implements SensorEventListener, LocationListener{
 
 	private SensorManager sm;
 	private float[] gravity = null;
@@ -32,13 +35,21 @@ public class TestValuesActivity extends SherlockActivity implements SensorEventL
 		sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		
 		if (sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){	
-			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 1000000);
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
 		}
 		if (sm.getDefaultSensor(Sensor.TYPE_ORIENTATION) != null){	
-			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ORIENTATION), 1000000);
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_UI);
 		}
 		gravity = new float[10];
 		linear_acceleration = new float[10];
+		
+		// Acquire a reference to the system Location Manager
+		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		
+		// Register the listener with the Location Manager to receive location updates
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this); // GPS
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this); // NETWORK
+		
 	}
 
 	@Override
@@ -133,6 +144,38 @@ public class TestValuesActivity extends SherlockActivity implements SensorEventL
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		// TODO Auto-generated method stub
 		Log.d("Icarus", "onAccuracyChanged");
+	}
+
+	@Override
+	public void onLocationChanged(Location loc) {
+		
+		
+		TextView lat = (TextView) findViewById(R.id.lat);
+		lat.setText(Double.toString(loc.getLatitude()));
+		
+		TextView lng = (TextView) findViewById(R.id.lng);
+		lng.setText(Double.toString(loc.getLongitude()));
+		
+		TextView dir = (TextView) findViewById(R.id.dir);
+		dir.setText(Float.toString(loc.getBearing()));
+	}
+
+	@Override
+	public void onProviderDisabled(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderEnabled(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

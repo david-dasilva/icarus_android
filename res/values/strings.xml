@@ -20,5 +20,12 @@
     <string name="axeX">Axe X</string>
     <string name="axeY">Axe Y</string>
     <string name="axeZ">Axe Z</string>
+    <string name="position">Position</string>
+    <string name="lat">Lat</string>
+    <string name="lng">Lng</string>
+    <string name="direction">Direction</string>
+    <string name="azimuth">Azimuth</string>
+    <string name="pitch">Pitch</string>
+    <string name="roll">Roll</string>
 
 </resources>
