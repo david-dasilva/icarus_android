@@ -21,7 +21,6 @@ public class TestValuesActivity extends SherlockActivity implements SensorEventL
 	private SensorManager sm;
 	private float[] gravity = null;
 	private float[] linear_acceleration = null;
-	private Sensor accelerometre;
 	
 	
 	@Override
@@ -32,9 +31,11 @@ public class TestValuesActivity extends SherlockActivity implements SensorEventL
 		
 		sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		
-		if (sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
-			accelerometre = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-			sm.registerListener(this, accelerometre, SensorManager.SENSOR_DELAY_NORMAL);
+		if (sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){	
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 1000000);
+		}
+		if (sm.getDefaultSensor(Sensor.TYPE_ORIENTATION) != null){	
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ORIENTATION), 1000000);
 		}
 		gravity = new float[10];
 		linear_acceleration = new float[10];
@@ -73,38 +74,59 @@ public class TestValuesActivity extends SherlockActivity implements SensorEventL
 	
 	@Override
 	public void onSensorChanged(SensorEvent event){
-		// In this example, alpha is calculated as t / (t + dT),
-		// where t is the low-pass filter's time-constant and
-		// dT is the event delivery rate.
+		
+		Sensor sensor = event.sensor;
+        
+		if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            /*
+             * 
+             * Accelerometre
+             * 
+             * 
+             */
+			// In this example, alpha is calculated as t / (t + dT),
+			// where t is the low-pass filter's time-constant and
+			// dT is the event delivery rate.
+		
+			
+			final float kFilteringFactor = 0.1f;
 
-		Log.d("Icarus", "onSensorChanged");
-		Log.d("Icarus", "event :"+event.values.toString());
-		
-		
-		final float alpha = 0.8f;
+			// Isolate the force of gravity with the low-pass filter.
+			gravity[0] = event.values[0] * kFilteringFactor + gravity[0] * (1.0f - kFilteringFactor) ;
+			gravity[1] = event.values[1] * kFilteringFactor + gravity[1] * (1.0f - kFilteringFactor) ;
+			gravity[2] = event.values[2] * kFilteringFactor + gravity[2] * (1.0f - kFilteringFactor) ;;
 
-		// Isolate the force of gravity with the low-pass filter.
-		gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
-		gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
-		gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
+			// Remove the gravity contribution with the high-pass filter.
+			linear_acceleration[0] = event.values[0] - gravity[0];
+			linear_acceleration[1] = event.values[1] - gravity[1];
+			linear_acceleration[2] = event.values[2] - gravity[2];
 
-		// Remove the gravity contribution with the high-pass filter.
-		linear_acceleration[0] = event.values[0] - gravity[0];
-		linear_acceleration[1] = event.values[1] - gravity[1];
-		linear_acceleration[2] = event.values[2] - gravity[2];
-
-		TextView accX = (TextView) findViewById(R.id.accX);
-		accX.setText(Float.toString(linear_acceleration[0]));
-		
-		TextView accY = (TextView) findViewById(R.id.accY);
-		accY.setText(Float.toString(linear_acceleration[1]));
-		
-		TextView accZ = (TextView) findViewById(R.id.accZ);
-		accZ.setText(Float.toString(linear_acceleration[2]));
-		
-		//Log.d("Icarus", "linear_acceleration[0] = "+linear_acceleration[0]);
-		//Log.d("Icarus", "linear_acceleration[1] = "+linear_acceleration[1]);
-		//Log.d("Icarus", "linear_acceleration[2] = "+linear_acceleration[2]);
+			TextView accX = (TextView) findViewById(R.id.accX);
+			accX.setText(Float.toString(linear_acceleration[0]));
+			
+			TextView accY = (TextView) findViewById(R.id.accY);
+			accY.setText(Float.toString(linear_acceleration[1]));
+			
+			TextView accZ = (TextView) findViewById(R.id.accZ);
+			accZ.setText(Float.toString(linear_acceleration[2]));
+        }else if (sensor.getType() == Sensor.TYPE_ORIENTATION) {
+            /*
+             * 
+             * Orientation
+             * 
+             */
+        	Log.d("Icarus", "Capteur d'orientation");
+        	TextView oriX = (TextView) findViewById(R.id.oriX);
+			oriX.setText(Float.toString(event.values[0]));
+			
+			TextView oriY = (TextView) findViewById(R.id.oriY);
+			oriY.setText(Float.toString(event.values[1]));
+			
+			TextView oriZ = (TextView) findViewById(R.id.oriZ);
+			oriZ.setText(Float.toString(event.values[2]));
+			   	
+        	
+        }
 	}
 
 	@Override
