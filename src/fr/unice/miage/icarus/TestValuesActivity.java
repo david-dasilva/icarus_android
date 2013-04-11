@@ -42,6 +42,7 @@ public class TestValuesActivity extends SherlockActivity implements SensorEventL
 		// Acquire a reference to the system Location Manager
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		
+		registerListeners();
 	}
 
 	private void registerListeners(){
