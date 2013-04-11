@@ -24,14 +24,49 @@ public class Logger {
 	private FileOutputStream fOut = null;
 	private OutputStreamWriter osw = null;
 	
+	private boolean accFilled = false;
+	private boolean oriFilled = false;
+	private boolean posFilled = false;
+	
 	public Logger(Context ctx){
 		this.context = ctx;
 	}
 	
 	
 	public void setAcceleration(float[] acc){
+		this.acceleration = acc;
+		this.accFilled = true;
 		
+		if(isComplete())
+			flush();
 	}
+	
+	public void setOrientation(float[] ori){
+		this.orientation = ori;
+		this.oriFilled = true;
+		
+		if(isComplete())
+			flush();
+	}
+	
+	public void setPosition(Location loc){
+		this.position = loc;
+		this.posFilled = true;
+		
+		if(isComplete())
+			flush();
+	}
+	
+	
+	
+	private boolean isComplete(){
+		
+		if(accFilled && oriFilled && posFilled)
+			return true;
+
+		return false;
+	}
+	
 	
 	/**
 	 * Methode appellée pour ecrire une ligne sur le fichier
@@ -63,7 +98,7 @@ public class Logger {
 		String sAccelerationX = Float.toString(acceleration[0]);
 		String sAccelerationY = Float.toString(acceleration[1]);
 		String sAccelerationZ = Float.toString(acceleration[2]);
-		ligne += "\t<acceleration x="+sAccelerationX+" y="+sAccelerationY+" z="+sAccelerationX+">\n";
+		ligne += "\t<acceleration x="+sAccelerationX+" y="+sAccelerationY+" z="+sAccelerationZ+">\n";
 		
 		/*
 		 * Orientation		
@@ -89,6 +124,12 @@ public class Logger {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		accFilled = false;
+		oriFilled = false;
+		posFilled = false;
+		
+		
 	}
 	
 }
