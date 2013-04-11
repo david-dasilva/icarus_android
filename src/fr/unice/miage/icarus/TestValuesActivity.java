@@ -1,5 +1,8 @@
 package fr.unice.miage.icarus;
 
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -22,8 +25,9 @@ import android.hardware.SensorManager;
 public class TestValuesActivity extends SherlockActivity implements SensorEventListener, LocationListener{
 
 	private SensorManager sm;
-	private float[] gravity = null;
-	private float[] linear_acceleration = null;
+	private LocationManager locationManager;
+	private float[] gravity = new float[10];
+	private float[] linear_acceleration = new float[10];
 	
 	
 	@Override
@@ -32,7 +36,15 @@ public class TestValuesActivity extends SherlockActivity implements SensorEventL
 		setContentView(R.layout.activity_test_values);
 		Log.d("Icarus", "TestValuesActivity started");
 		
+		// Acquire a reference to the system SensorManager
 		sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		
+		// Acquire a reference to the system Location Manager
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		
+	}
+
+	private void registerListeners(){
 		
 		if (sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){	
 			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
@@ -40,18 +52,14 @@ public class TestValuesActivity extends SherlockActivity implements SensorEventL
 		if (sm.getDefaultSensor(Sensor.TYPE_ORIENTATION) != null){	
 			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_UI);
 		}
-		gravity = new float[10];
-		linear_acceleration = new float[10];
-		
-		// Acquire a reference to the system Location Manager
-		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		
 		// Register the listener with the Location Manager to receive location updates
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this); // GPS
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this); // NETWORK
-		
 	}
-
+	
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -82,24 +90,28 @@ public class TestValuesActivity extends SherlockActivity implements SensorEventL
 	}
 	
 
-	
+	/**
+	 * A defaut de faire un SensorEventListener différent par capteur, on utilise le même
+	 * sur lequel on va tester le type d'evenement
+	 */
 	@Override
 	public void onSensorChanged(SensorEvent event){
 		
+		// Récupere le type de capteur qui a généré l'évenement
 		Sensor sensor = event.sensor;
         
+		/*
+		 * Accelerometre
+		 */
 		if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            /*
-             * 
-             * Accelerometre
-             * 
-             * 
-             */
+
 			// In this example, alpha is calculated as t / (t + dT),
 			// where t is the low-pass filter's time-constant and
 			// dT is the event delivery rate.
 		
-			
+			/*
+			 * Filtrage passe-bas
+			 */
 			final float kFilteringFactor = 0.1f;
 
 			// Isolate the force of gravity with the low-pass filter.
@@ -112,34 +124,75 @@ public class TestValuesActivity extends SherlockActivity implements SensorEventL
 			linear_acceleration[1] = event.values[1] - gravity[1];
 			linear_acceleration[2] = event.values[2] - gravity[2];
 
-			TextView accX = (TextView) findViewById(R.id.accX);
-			accX.setText(Float.toString(linear_acceleration[0]));
+			// affichage des données
+			displayAccValues(linear_acceleration[0], linear_acceleration[1], linear_acceleration[2]);
 			
-			TextView accY = (TextView) findViewById(R.id.accY);
-			accY.setText(Float.toString(linear_acceleration[1]));
 			
-			TextView accZ = (TextView) findViewById(R.id.accZ);
-			accZ.setText(Float.toString(linear_acceleration[2]));
-        }else if (sensor.getType() == Sensor.TYPE_ORIENTATION) {
-            /*
-             * 
+			
+        }
+		else if (sensor.getType() == Sensor.TYPE_ORIENTATION) {
+			/*
              * Orientation
-             * 
              */
-        	Log.d("Icarus", "Capteur d'orientation");
-        	TextView oriX = (TextView) findViewById(R.id.oriX);
-			oriX.setText(Float.toString(event.values[0]));
-			
-			TextView oriY = (TextView) findViewById(R.id.oriY);
-			oriY.setText(Float.toString(event.values[1]));
-			
-			TextView oriZ = (TextView) findViewById(R.id.oriZ);
-			oriZ.setText(Float.toString(event.values[2]));
-			   	
-        	
+			displayOriValues(event.values[0], event.values[1], event.values[2]);
         }
 	}
 
+	/**
+	 * Affiche les valeurs de l'accelerometre sur l'écran de test
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	private void displayAccValues(float x, float y, float z){
+		
+		TextView accX = (TextView) findViewById(R.id.accX);
+		accX.setText(Float.toString(x));
+		
+		TextView accY = (TextView) findViewById(R.id.accY);
+		accY.setText(Float.toString(y));
+		
+		TextView accZ = (TextView) findViewById(R.id.accZ);
+		accZ.setText(Float.toString(z));
+		
+	}
+	
+	/**
+	 * Affiche les valeurs des capteurs d'orientation sur l'écran de test
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	private void displayOriValues(float x, float y, float z){
+		Log.d("Icarus", "Capteur d'orientation");
+    	TextView oriX = (TextView) findViewById(R.id.oriX);
+		oriX.setText(Float.toString(x));
+		
+		TextView oriY = (TextView) findViewById(R.id.oriY);
+		oriY.setText(Float.toString(y));
+		
+		TextView oriZ = (TextView) findViewById(R.id.oriZ);
+		oriZ.setText(Float.toString(z));
+	}
+	/**
+	 * Affiche les valeurs des capteurs de position sur l'écran de test
+	 * @param loc
+	 */
+	private void displayPosValues(Location loc){
+		TextView lat = (TextView) findViewById(R.id.lat);
+		lat.setText(Double.toString(loc.getLatitude()));
+		
+		TextView lng = (TextView) findViewById(R.id.lng);
+		lng.setText(Double.toString(loc.getLongitude()));
+		
+		TextView dir = (TextView) findViewById(R.id.dir);
+		dir.setText(Float.toString(loc.getBearing()));
+		
+		TextView alt = (TextView) findViewById(R.id.alt);
+		alt.setText(Double.toString(loc.getAltitude()));
+	}
+	
+	
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		// TODO Auto-generated method stub
@@ -149,15 +202,7 @@ public class TestValuesActivity extends SherlockActivity implements SensorEventL
 	@Override
 	public void onLocationChanged(Location loc) {
 		
-		
-		TextView lat = (TextView) findViewById(R.id.lat);
-		lat.setText(Double.toString(loc.getLatitude()));
-		
-		TextView lng = (TextView) findViewById(R.id.lng);
-		lng.setText(Double.toString(loc.getLongitude()));
-		
-		TextView dir = (TextView) findViewById(R.id.dir);
-		dir.setText(Float.toString(loc.getBearing()));
+		displayPosValues(loc);
 	}
 
 	@Override
@@ -178,6 +223,25 @@ public class TestValuesActivity extends SherlockActivity implements SensorEventL
 		
 	}
 
+
+	
+	private void writeData(Context ctx, String data){
+		FileOutputStream fOut = null;
+		OutputStreamWriter osw = null;
+
+		try{
+			fOut = ctx.openFileOutput("enregistreurvol.txt",MODE_APPEND);
+			osw = new OutputStreamWriter(fOut);
+			osw.write(data);
+			osw.flush();
+			osw.close();
+			fOut.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	
 }

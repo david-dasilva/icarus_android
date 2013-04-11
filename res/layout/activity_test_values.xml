@@ -158,34 +158,6 @@
         android:text="n/a" />
 
     <TextView
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView10"
-        android:layout_below="@+id/textView10"
-        android:layout_marginTop="16dp"
-        android:text="@string/lng" />
-
-    <TextView
-        android:id="@+id/lng"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView11"
-        android:layout_alignBottom="@+id/textView11"
-        android:layout_alignLeft="@+id/lat"
-        android:minWidth="150dp"
-        android:text="n/a" />
-
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView11"
-        android:layout_below="@+id/textView11"
-        android:layout_marginTop="14dp"
-        android:text="@string/direction" />
-
-    <TextView
         android:id="@+id/dir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -200,6 +172,49 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView1"
         android:layout_alignBottom="@+id/textView1"
+        android:layout_toRightOf="@+id/textView9"
+        android:minWidth="150dp"
+        android:text="n/a" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView10"
+        android:layout_below="@+id/textView10"
+        android:text="@string/lng" />
+
+    <TextView
+        android:id="@+id/lng"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView12"
+        android:layout_toRightOf="@+id/textView9"
+        android:minWidth="150dp"
+        android:text="n/a" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView11"
+        android:layout_below="@+id/textView11"
+        android:text="@string/direction" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView12"
+        android:layout_below="@+id/textView12"
+        android:text="@string/altitude" />
+
+    <TextView
+        android:id="@+id/alt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView13"
+        android:layout_alignBottom="@+id/textView13"
         android:layout_toRightOf="@+id/textView9"
         android:minWidth="150dp"
         android:text="n/a" />

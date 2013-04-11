@@ -27,5 +27,6 @@
     <string name="azimuth">Azimuth</string>
     <string name="pitch">Pitch</string>
     <string name="roll">Roll</string>
+    <string name="altitude">Altitude</string>
 
 </resources>
