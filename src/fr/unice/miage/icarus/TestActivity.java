@@ -12,6 +12,8 @@ import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import fr.unice.miage.icarus.activities.EnregistrementActivity;
+
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;

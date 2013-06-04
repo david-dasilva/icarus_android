@@ -40,5 +40,8 @@
     <string name="resetPitchAndRoll">RAZ Pitch et Roll</string>
     <string name="calibrerAzimuth">Calibrer Azimuth</string>
     <string name="startRecording">Démarrer enregistrement</string>
+    <string name="recording">Enregistrement en cours...</string>
+    <string name="stopRecording">Arrêter l\'enregistrement</string>
+    <string name="title_activity_transmission">TransmissionActivity</string>
 
 </resources>

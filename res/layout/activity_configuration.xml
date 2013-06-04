@@ -1,11 +1,8 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
 
-    <TableLayout
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="5dp"
         android:stretchColumns="1" >
 
         <TableRow
@@ -107,9 +104,7 @@
            
         </TableRow>
         
-        <View
-            android:layout_height="2dip"
-            android:background="@android:color/holo_blue_light" />
+
         
         <TableRow
             android:id="@+id/tableRow6"
@@ -128,7 +123,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="5"
-                android:progress="1" />
+                android:progress="1"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textViewUpdateIntervalValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.0 s"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
         </TableRow>
 
@@ -174,9 +177,7 @@
 
         </TableRow>
 
-        <View
-            android:layout_height="2dip"
-            android:background="@android:color/holo_blue_light" />
+
         
         <TableRow
             android:id="@+id/tableRow10"
@@ -196,5 +197,3 @@
         </TableRow>
         
     </TableLayout>
-
-</ScrollView>

@@ -1,0 +1,228 @@
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:stretchColumns="3" >
+
+        <TableRow
+            android:id="@+id/tableRow10"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="4"
+                android:text="@string/recording"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#ff0000" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/orientation"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/azimuth" />
+
+            <TextView
+                android:id="@+id/textViewAzimuth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="n/a"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pitch" />
+
+            <TextView
+                android:id="@+id/textViewPitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="n/a"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/roll" />
+
+            <TextView
+                android:id="@+id/textViewRoll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="n/a"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+
+        
+        
+        
+        
+        
+        
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/position"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow6"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/textViewUpdateIntervalValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lat" />
+
+            <TextView
+                android:id="@+id/textViewLat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="n/a"
+                android:textStyle="bold"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:text="@string/lng"
+                android:width="75dp" />
+
+            <TextView
+                android:id="@+id/textViewLng"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="n/a"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow7"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/direction" />
+
+            <TextView
+                android:id="@+id/textViewDirection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="n/a"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow8"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/altitude" />
+
+            <TextView
+                android:id="@+id/textViewAltitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="n/a"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+
+        
+        
+        
+        
+        
+        
+        
+        <TableRow
+            android:id="@+id/tableRow9"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2" >
+
+            <Button
+                android:id="@+id/buttonStopRecording"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_span="4"
+                android:text="@string/stopRecording"
+                android:textColor="#ff0000"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+    </TableLayout>
