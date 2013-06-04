@@ -60,15 +60,17 @@ public class EnregistrementActivity extends Activity{
 			flightSettings  = (FlightSettings)extras.get("settings");
 		}
 		
-		logger = new FlightLogger(this,
-				flightSettings.getFlightName(),
-				flightSettings.getPilot(),
-				String.valueOf(flightSettings.getUpdateIntervalInSeconds()),
-				flightSettings.getAircraft(),
-				flightSettings.getDepart(),
-				flightSettings.getDevice(),
-				flightSettings.getNotes());
-		
+		// FIX: évite de créer plusieurs fois le logger.
+		if (logger == null){
+			logger = new FlightLogger(this,
+					flightSettings.getFlightName(),
+					flightSettings.getPilot(),
+					String.valueOf(flightSettings.getUpdateIntervalInSeconds()),
+					flightSettings.getAircraft(),
+					flightSettings.getDepart(),
+					flightSettings.getDevice(),
+					flightSettings.getNotes());
+		}
 		// Bouton arreter
 		final Button boutonArreter = (Button) findViewById(R.id.buttonStopRecording);
 		boutonArreter.setOnClickListener(new OnClickListener() {

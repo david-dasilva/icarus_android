@@ -139,7 +139,7 @@ public class FlightLogger extends FlightDataBuffer {
 		/*
 		 * Construction de la ligne
 		 */
-		String ligne = "\t<mesure time="+_timestamp.toString()+">\n";
+		String ligne = "\t\t<mesure time="+_timestamp.toString()+">\n";
 		
 		/*
 		 * Position
@@ -148,34 +148,26 @@ public class FlightLogger extends FlightDataBuffer {
 		String sLng = Double.toString(_location.getLongitude());
 		String sAlt = Double.toString(_location.getAltitude());
 		String sBearing = Double.toString(_location.getBearing());
-		ligne += "\t\t<position>\n";
-		ligne += "\t\t\t<lat>"+sLat+"</lat>\n";
-		ligne += "\t\t\t<lng>"+sLng+"</lng>\n";
-		ligne += "\t\t\t<alt>"+sAlt+"</alt>\n";
-		ligne += "\t\t\t<bearing>"+sBearing+"</bearing>\n";
+		ligne += "\t\t\t<position>\n";
+		ligne += "\t\t\t\t<lat>"+sLat+"</lat>\n";
+		ligne += "\t\t\t\t<lng>"+sLng+"</lng>\n";
+		ligne += "\t\t\t\t<alt>"+sAlt+"</alt>\n";
+		ligne += "\t\t\t\t<bearing>"+sBearing+"</bearing>\n";
 		/*
 		 * Orientation		
 		 */
 		String sAzimuth = Float.toString(_orix);
 		String sPitch = Float.toString(_oriy);
 		String sRoll = Float.toString(_oriz);
-		ligne += "\t\t\t<azimuth>"+sAzimuth+"</azimuth>\n";
-		ligne += "\t\t\t<pitch>"+sPitch+"</pitch>\n";
-		ligne += "\t\t\t<roll>"+sRoll+"</roll>\n";
+		ligne += "\t\t\t\t<azimuth>"+sAzimuth+"</azimuth>\n";
+		ligne += "\t\t\t\t<pitch>"+sPitch+"</pitch>\n";
+		ligne += "\t\t\t\t<roll>"+sRoll+"</roll>\n";
 		
-		ligne += "\t\t</position>\n";
-		/*
-		 * Acceleration
-		 */
-//		String sAccelerationX = Float.toString(_accx);
-//		String sAccelerationY = Float.toString(_accy);
-//		String sAccelerationZ = Float.toString(_accz);
-//		ligne += "\t<acceleration x="+sAccelerationX+" y="+sAccelerationY+" z="+sAccelerationZ+">\n";
-		
-		
+		ligne += "\t\t\t</position>\n";
+
 				
 				
-		ligne += "\t</mesure>\n";
+		ligne += "\t\t</mesure>\n";
 		
 		try{
 			osw.write(ligne);
