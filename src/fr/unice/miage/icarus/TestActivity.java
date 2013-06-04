@@ -91,7 +91,7 @@ public class TestActivity extends SherlockActivity {
         	startActivity(intent2);
         	return true;   
         case R.id.menu_valeurs:
-        	Intent intent3 = new Intent(this, TestValuesActivity.class);
+        	Intent intent3 = new Intent(this, EnregistrementActivity.class);
         	startActivity(intent3);
         	return true;
         default:

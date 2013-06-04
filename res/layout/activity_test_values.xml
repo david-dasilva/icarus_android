@@ -2,75 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TestValuesActivity" >
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/accelerometer"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_below="@+id/textView3"
-        android:layout_marginTop="18dp"
-        android:text="@string/axeX" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="14dp"
-        android:text="@string/axeY" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="15dp"
-        android:text="@string/axeZ" />
-
-    <TextView
-        android:id="@+id/accY"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView2"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_alignRight="@+id/accX"
-        android:minWidth="150dp"
-        android:text="n/a" />
-
-    <TextView
-        android:id="@+id/accZ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView4"
-        android:layout_alignBottom="@+id/textView4"
-        android:layout_alignRight="@+id/accY"
-        android:minWidth="150dp"
-        android:text="n/a" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_below="@+id/textView4"
-        android:layout_marginTop="22dp"
-        android:text="@string/orientation"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    tools:context=".EnregistrementActivity" >
 
     <TextView
         android:id="@+id/textView6"
@@ -98,15 +30,6 @@
         android:layout_below="@+id/textView7"
         android:layout_marginTop="19dp"
         android:text="@string/roll" />
-
-    <TextView
-        android:id="@+id/oriX"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView7"
-        android:layout_alignLeft="@+id/accZ"
-        android:minWidth="150dp"
-        android:text="n/a" />
 
     <TextView
         android:id="@+id/oriY"
@@ -167,31 +90,12 @@
         android:text="n/a" />
 
     <TextView
-        android:id="@+id/accX"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView1"
-        android:layout_alignBottom="@+id/textView1"
-        android:layout_toRightOf="@+id/textView9"
-        android:minWidth="150dp"
-        android:text="n/a" />
-
-    <TextView
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView10"
         android:layout_below="@+id/textView10"
         android:text="@string/lng" />
-
-    <TextView
-        android:id="@+id/lng"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView12"
-        android:layout_toRightOf="@+id/textView9"
-        android:minWidth="150dp"
-        android:text="n/a" />
 
     <TextView
         android:id="@+id/textView12"
@@ -210,13 +114,43 @@
         android:text="@string/altitude" />
 
     <TextView
+        android:id="@+id/oriX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView6"
+        android:layout_alignBottom="@+id/textView6"
+        android:layout_toRightOf="@+id/textView5"
+        android:minWidth="150dp"
+        android:text="n/a" />
+
+    <TextView
+        android:id="@+id/lng"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/dir"
+        android:layout_alignLeft="@+id/lat"
+        android:minWidth="150dp"
+        android:text="n/a" />
+
+    <TextView
         android:id="@+id/alt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView13"
         android:layout_alignBottom="@+id/textView13"
-        android:layout_toRightOf="@+id/textView9"
+        android:layout_alignLeft="@+id/dir"
         android:minWidth="150dp"
         android:text="n/a" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="22dp"
+        android:text="@string/orientation"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
