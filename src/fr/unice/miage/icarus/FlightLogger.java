@@ -19,7 +19,7 @@ import android.widget.Toast;
  */
 public class FlightLogger extends FlightDataBuffer {
 	
-	
+	public File logFile = null;
 	private FileOutputStream fOut = null;
 	private OutputStreamWriter osw = null;
 	
@@ -54,11 +54,11 @@ public class FlightLogger extends FlightDataBuffer {
 		 * Creation et ouverture du fichier
 		 */
 		try{
-			File file = new File(context.getExternalFilesDir(null), _flight+".xml" );
-			Log.d("Icarus", "File : "+file.toString());
-			Toast toast = Toast.makeText(context, file.getPath(), Toast.LENGTH_LONG);
+			logFile = new File(context.getExternalFilesDir(null), _flight+".xml" );
+			Log.d("Icarus", "File : "+logFile.toString());
+			Toast toast = Toast.makeText(context, "Fichier crée : "+logFile.getPath(), Toast.LENGTH_LONG);
 			toast.show();
-			fOut = new FileOutputStream(file, true);
+			fOut = new FileOutputStream(logFile, true);
 			osw = new OutputStreamWriter(fOut);
 		}
 		catch (Exception e) {
@@ -78,7 +78,7 @@ public class FlightLogger extends FlightDataBuffer {
 	/**
 	 * Ferme le fichier correctement
 	 */
-	public void close(){
+	public File close(){
 		try {
 			// Dernière ligne du fichier
 			osw.write("\t</mesures>\n</vol>");
@@ -92,6 +92,8 @@ public class FlightLogger extends FlightDataBuffer {
 			Log.e("Icarus", "erreur a la fermeture du fichier");
 			e.printStackTrace();
 		}
+		
+		return logFile;
 		
 	}
 	

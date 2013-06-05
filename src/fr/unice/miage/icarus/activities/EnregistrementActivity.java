@@ -14,6 +14,7 @@ import fr.unice.miage.icarus.R.layout;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -147,8 +148,14 @@ public class EnregistrementActivity extends Activity{
 	
 	private void stopRecording() {
 		unregisterListeners();
-		logger.close();
-		//TODO : créer activité + interface fin d'enregistrement
+		flightSettings.setLogFile(logger.close());
+		
+		// Appel de l'activité d'enregistrement
+		Intent transmissionIntent = new Intent(this, TransmissionActivity.class);
+		transmissionIntent.putExtra("settings", flightSettings);
+		
+		startActivity(transmissionIntent);
+		finish();
 	}
 	
 	

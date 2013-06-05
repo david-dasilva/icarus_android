@@ -43,5 +43,16 @@
     <string name="recording">Enregistrement en cours...</string>
     <string name="stopRecording">Arrêter l\'enregistrement</string>
     <string name="title_activity_transmission">TransmissionActivity</string>
+    <string name="recordingStopped">Enregistrement terminé</string>
+    <string name="sendRecordByMail">Envoyer l\'enregistrement par e-mail ?</string>
+    <string name="send">Envoyer</string>
+    <string name="sendRecordToServer">Envoyer l\'enregistrement au serveur :</string>
+    <string name="recordPrivacy">Enregistrement privé</string>
+    <string name="privateRecord">Privé</string>
+    <string name="publicRecord">Public</string>
+    <string name="password">Mot de passe</string>
+    <string name="recordVisibility">Enregistrement invisible</string>
+    <string name="quitWithoutSendingRecord">Quitter sans envoyer</string>
+    <string name="recordPath">Emplacement du fichier :</string>
 
 </resources>

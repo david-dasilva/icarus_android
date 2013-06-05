@@ -116,6 +116,7 @@ public class ConfigurationActivity extends Activity {
 		enregistrementIntent.putExtra("settings", flightSettings);
 		
 		startActivity(enregistrementIntent);
+		finish();
 	}
 	
 	

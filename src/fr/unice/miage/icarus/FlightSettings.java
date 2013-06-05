@@ -1,5 +1,6 @@
 package fr.unice.miage.icarus;
 
+import java.io.File;
 import java.io.Serializable;
 
 import android.hardware.SensorManager;
@@ -33,6 +34,8 @@ public class FlightSettings implements Serializable{
 	private float	correctionRoll;
 	private float	correctionAzimuth;
 	
+	private File logFile;
+	
 	
 	public FlightSettings(){
 		userid = 1;
@@ -48,7 +51,9 @@ public class FlightSettings implements Serializable{
 		correctionQNH = SensorManager.PRESSURE_STANDARD_ATMOSPHERE;     
 		correctionPitch = 0;   
 		correctionRoll = 0;    
-		correctionAzimuth = 0; 
+		correctionAzimuth = 0;
+		
+		logFile = null;
 	}
 	
 	
@@ -251,6 +256,24 @@ public class FlightSettings implements Serializable{
 	 */
 	public void setCorrectionAzimuth(float correctionAzimuth) {
 		this.correctionAzimuth = correctionAzimuth;
+	}
+
+
+
+	/**
+	 * @return the logFile
+	 */
+	public File getLogFile() {
+		return logFile;
+	}
+
+
+
+	/**
+	 * @param logFile the logFile to set
+	 */
+	public void setLogFile(File logFile) {
+		this.logFile = logFile;
 	}
 	
 	
