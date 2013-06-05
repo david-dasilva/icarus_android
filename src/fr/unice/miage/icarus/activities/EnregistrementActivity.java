@@ -25,6 +25,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ public class EnregistrementActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_enregistrement);
 		Log.d("Icarus", "TestValuesActivity started");
 		
@@ -124,12 +126,6 @@ public class EnregistrementActivity extends Activity{
 	}
 	
 	public void unregisterListeners(){
-		/*
-		 * Accelerometer
-		 */
-//		if (sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){	
-//			sm.unregisterListener(myAccSensorListener);
-//		}
 		
 		/*
 		 * Orientation
@@ -168,16 +164,35 @@ public class EnregistrementActivity extends Activity{
 	 * @param z
 	 */
 	private void updateOriValues(float x, float y, float z){
+		
+		float correctedAzimuth	= x + flightSettings.getCorrectionAzimuth();
+		if (correctedAzimuth > 360.0f)
+			correctedAzimuth -= 360.0f;
+		if (correctedAzimuth < 0.0f)
+			correctedAzimuth += 360.0f;
+		
+		
+		float correctedPitch	= y + flightSettings.getCorrectionPitch();
+		if(correctedPitch > 180.0f)
+			correctedPitch -= 360.0f;
+		if(correctedPitch < -180.0f)
+			correctedPitch += 360.0f;
+		float correctedRoll		= z + flightSettings.getCorrectionRoll();
+		if(correctedRoll > 90.0f)
+			correctedRoll -=180.0f;
+		if(correctedRoll < -90.0f)
+			correctedRoll +=180.0f;
+		
     	TextView oriX = (TextView) findViewById(R.id.textViewAzimuth);
-		oriX.setText(String.format("%.2f",x));
+		oriX.setText(String.format("%.2f",correctedAzimuth));
 		
 		TextView oriY = (TextView) findViewById(R.id.textViewPitch);
-		oriY.setText(String.format("%.2f",y));
+		oriY.setText(String.format("%.2f",correctedPitch));
 		
 		TextView oriZ = (TextView) findViewById(R.id.textViewRoll);
-		oriZ.setText(String.format("%.2f",z));
+		oriZ.setText(String.format("%.2f",correctedRoll));
 		
-		logger.setOrientation(x, y, z);
+		logger.setOrientation(correctedAzimuth, correctedPitch, correctedRoll);
 	}
 	/**
 	 * Affiche les valeurs des capteurs de position sur l'écran de test

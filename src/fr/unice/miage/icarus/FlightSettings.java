@@ -14,7 +14,7 @@ import android.location.LocationManager;
 public class FlightSettings implements Serializable{
 	
 	// userid retourné par le serveur
-	private int userid;
+	private String userid;
 	/*
 	 * User inputs
 	 */
@@ -38,7 +38,7 @@ public class FlightSettings implements Serializable{
 	
 	
 	public FlightSettings(){
-		userid = 1;
+		userid = "1";
 		flightName ="EmptyFlightName";
 		updateIntervalInSeconds = 1.0f;
 		pilot ="EmptyPilot";
@@ -49,9 +49,9 @@ public class FlightSettings implements Serializable{
 		
 		correctionAltitude = 0;    
 		correctionQNH = SensorManager.PRESSURE_STANDARD_ATMOSPHERE;     
-		correctionPitch = 0;   
-		correctionRoll = 0;    
-		correctionAzimuth = 0;
+		correctionPitch = 0.0f;   
+		correctionRoll = 0.0f;    
+		correctionAzimuth = 0.0f;
 		
 		logFile = null;
 	}
@@ -61,13 +61,13 @@ public class FlightSettings implements Serializable{
 	/**
 	 * @return the userid
 	 */
-	public int getUserid() {
+	public String getUserid() {
 		return userid;
 	}
 	/**
 	 * @param userid the userid to set
 	 */
-	public void setUserid(int userid) {
+	public void setUserid(String userid) {
 		this.userid = userid;
 	}
 	

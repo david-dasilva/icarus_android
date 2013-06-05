@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
@@ -28,6 +27,8 @@ public class AsyncHttpPostTask extends AsyncTask<Void, Void, String> {
 	private String server;
 	private HashMap<String, ContentBody> params;
 	
+	private static final String MESSAGE_OK = "1";
+		
 	public AsyncHttpPostTask(Activity activity, final String server, HashMap<String, ContentBody> params){
 		this.activity = activity;
 		this.server = server;
@@ -37,7 +38,8 @@ public class AsyncHttpPostTask extends AsyncTask<Void, Void, String> {
 	@Override
 	protected String doInBackground(Void... arg0) {
 
-		String returnValue = "";
+		String statusCode = "";
+		String messageRetour = "";
 		
 		Log.d("Icarus", "AsyncTask : doInBackground");
 		//HttpClient httpClient = new DefaultHttpClient();
@@ -69,7 +71,7 @@ public class AsyncHttpPostTask extends AsyncTask<Void, Void, String> {
 			String line;
 			
 			// Code retour HTTP. OK si page valide. Ne garantie pas que le php a bien géré le fichier
-			returnValue = reponse.getStatusLine().getReasonPhrase();
+			statusCode = reponse.getStatusLine().getReasonPhrase();
 			
 			try{
 				while ((line = rd.readLine()) != null){
@@ -86,6 +88,11 @@ public class AsyncHttpPostTask extends AsyncTask<Void, Void, String> {
 			}
 			
 			Log.d("Icarus", "SERVER_RESPONSE : "+out.toString());
+			messageRetour = out.toString();
+			
+			
+			
+			
 			
 		} catch (ClientProtocolException e){
 			e.printStackTrace();
@@ -96,7 +103,13 @@ public class AsyncHttpPostTask extends AsyncTask<Void, Void, String> {
 		if (httpClient != null)
 			httpClient.close();
 		
-		return returnValue;
+		if (messageRetour.equals(MESSAGE_OK) && statusCode.equals("OK")){
+			return UploadStatus.SUCCESS.toString();
+		} else if (!statusCode.equals("OK")){
+			return UploadStatus.SERVER_ERROR.toString();
+		} else {
+			return UploadStatus.FAILED.toString();
+		}
 	}
 
 
@@ -105,7 +118,7 @@ public class AsyncHttpPostTask extends AsyncTask<Void, Void, String> {
 		super.onPostExecute(result);
 		
 		//TODO : check la réponse et fermer l'activité si c'est OK
-		if(result.equals("OK")){
+		if(result.equals(UploadStatus.SUCCESS.toString())){
 			Toast toast = Toast.makeText(activity, "Enregistrement envoyé", Toast.LENGTH_LONG);
 			toast.show();
 			
@@ -118,7 +131,7 @@ public class AsyncHttpPostTask extends AsyncTask<Void, Void, String> {
 			
 			
 		} else {
-			Toast toast = Toast.makeText(activity, "Erreur de communication avec le serveur", Toast.LENGTH_LONG);
+			Toast toast = Toast.makeText(activity, "Erreur de communication avec le serveur. code :"+result, Toast.LENGTH_LONG);
 			toast.show();
 		}
 		

@@ -54,5 +54,10 @@
     <string name="recordVisibility">Enregistrement invisible</string>
     <string name="quitWithoutSendingRecord">Quitter sans envoyer</string>
     <string name="recordPath">Emplacement du fichier :</string>
+    <string name="title_activity_login">Identification</string>
+    <string name="login">Identifiant</string>
+    <string name="logon">Se connecter</string>
+    <string name="valeur">Valeur</string>
+    <string name="currentAzimuth">Cap actuel</string>
 
 </resources>

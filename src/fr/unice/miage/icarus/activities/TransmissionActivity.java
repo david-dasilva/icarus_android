@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Stack;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -22,15 +24,20 @@ import fr.unice.miage.icarus.FlightSettings;
 import fr.unice.miage.icarus.R;
 import fr.unice.miage.icarus.R.layout;
 import fr.unice.miage.icarus.R.menu;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.support.v4.os.ParcelableCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -43,7 +50,10 @@ import android.widget.Toast;
 public class TransmissionActivity extends Activity {
 
 	private FlightSettings flightSettings;
-	private static final String WEBSERVICE_URL = "http://projetdannee.pardailhan.org/CodeIgniter/index.php/Vol/verificationAjoutVol";
+	private static final String WEBSERVICE_URL = "http://projetdannee.pardailhan.org/CodeIgniter/index.php/WebService/verificationAjoutVol";
+	private static final String SERVER_URL = "http://projetdannee.pardailhan.org";
+	//private static final String FROM_EMAIL = "contact@daviddasilva.net";
+	
 	
 	private boolean	isPrivate = false;
 	private boolean	isVisible = true;
@@ -54,6 +64,7 @@ public class TransmissionActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_transmission);
 		
 		
@@ -153,7 +164,60 @@ public class TransmissionActivity extends Activity {
 	
 	private void sendRecordByEmail(){
 		
+		String bodyText = "Bonjour,\n";
+		bodyText 		+= "Vous trouverez en pièce jointe l'enregistrement du vol ";
+		bodyText 		+= flightSettings.getFlightName()+".\n";
+		bodyText 		+= "Vous pouvez l'uploader à cette adresse : "+SERVER_URL;
+		
+		final EditText mailField = (EditText)findViewById(R.id.editTextEmail);
+		String destination = mailField.getText().toString();
+		/*
+		 * Creation de l'intent pour le mail 
+		 */
+		Intent i = new Intent(Intent.ACTION_SEND);
+		i.setType("*/*");
+		i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(flightSettings.getLogFile()));
+		i.putExtra(Intent.EXTRA_EMAIL, new String[] {
+				destination
+		});
+		i.putExtra(Intent.EXTRA_SUBJECT, "[Icarus] Enregistrement "+flightSettings.getFlightName());
+		i.putExtra(Intent.EXTRA_TEXT, bodyText);
+		
+		
+		startActivity(createEmailChooserIntent(i, destination, "Envoyer par mail..."));
 	}
+	
+	/**
+	 * Crée un chooser pour choisir l'application mail a utiliser.
+	 * @param source
+	 * @param destination
+	 * @param chooserTitle
+	 * @return
+	 */
+	private Intent createEmailChooserIntent(Intent source, String destination, CharSequence chooserTitle){
+		
+		Stack<Intent> intents = new Stack<Intent>();
+		Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", destination, null));
+		List<ResolveInfo> activities = getPackageManager().queryIntentActivities(i, 0);
+		
+		
+		for(ResolveInfo ri : activities){
+			Intent target = new Intent(source);
+			target.setPackage(ri.activityInfo.packageName);
+			intents.add(target);
+		}
+		
+		if(!intents.isEmpty()){
+			Intent chooserIntent = Intent.createChooser(intents.remove(0), chooserTitle);
+			chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.toArray(new Parcelable[intents.size()]));
+			
+			return chooserIntent;
+		} else {
+			return Intent.createChooser(source, chooserTitle);
+		}
+	}
+	
+	
 	/**
 	 * Envoie le fichier + quelques parametres au webservice de Dorian
 	 * @source StackOverflow
@@ -183,7 +247,7 @@ public class TransmissionActivity extends Activity {
 			if(isPrivate)
 				params.put("mot_de_passe", new StringBody(password));
 			params.put("visible", new StringBody(visibility));
-			params.put("nom_vol", new StringBody(String.valueOf(flightSettings.getUserid())));
+			params.put("id_utilisateur", new StringBody(flightSettings.getUserid()));
 			params.put("fichier_vol", new FileBody(flightSettings.getLogFile()));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

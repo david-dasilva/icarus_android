@@ -23,10 +23,6 @@ public abstract class FlightDataBuffer {
 	protected Location	_location;
 	protected boolean	_locationReady;
 	
-//	protected float	_accx;
-//	protected float	_accy;
-//	protected float	_accz;
-//	protected boolean	_accelerationReady;
 	
 	protected float	_orix;
 	protected float	_oriy;
@@ -45,7 +41,6 @@ public abstract class FlightDataBuffer {
 		this._timestamp = System.currentTimeMillis();
 		
 		this._locationReady		= false;
-//		this._accelerationReady	= false;
 		this._orientationReady	= false;
 	}
 	
@@ -59,17 +54,6 @@ public abstract class FlightDataBuffer {
 		if(isReady())
 			flush();
 	}
-	
-//	public void setAcceleration(float x, float y, float z){
-//		this._accx = x;
-//		this._accy = y;
-//		this._accz = z;
-//		this._timestamp = System.currentTimeMillis();
-//		this._accelerationReady = true;
-//		
-//		if(isReady())
-//			flush();
-//	}
 	
 	public void setOrientation(float x, float y, float z){
 		this._orix = x;
@@ -85,7 +69,6 @@ public abstract class FlightDataBuffer {
 	public void reset(){
 		this._timestamp = System.currentTimeMillis();
 		this._locationReady		= false;
-//		this._accelerationReady	= false;
 		this._orientationReady	= false;
 	}
 	
@@ -95,7 +78,6 @@ public abstract class FlightDataBuffer {
 		if ( !_flight.isEmpty() 
 				&& _timestamp != 0.0f
 				&& _locationReady 
-//				&& _accelerationReady
 				&& _orientationReady){
 			return true;
 		}
