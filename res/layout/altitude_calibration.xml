@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:orientation="vertical" >
+
+    <RadioGroup
+        android:id="@+id/radioGroupModeCalibration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/radioAltitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/useAltitude" />
+
+        <RadioButton
+            android:id="@+id/radioPression"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/usePressure" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textViewUnitHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hintAltitude" />
+
+    <EditText
+        android:id="@+id/editTextAltitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:text="0" >
+
+        <requestFocus />
+    </EditText>
+
+</LinearLayout>
