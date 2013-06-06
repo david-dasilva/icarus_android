@@ -1,24 +1,18 @@
 package fr.unice.miage.icarus.activities;
 
-import java.util.ArrayList;
-
-import fr.unice.miage.icarus.AsyncAuthTask;
-import fr.unice.miage.icarus.AsyncHttpPostTask;
-import fr.unice.miage.icarus.R;
-import fr.unice.miage.icarus.R.layout;
-import fr.unice.miage.icarus.R.menu;
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import fr.unice.miage.icarus.AsyncAuthTask;
+import fr.unice.miage.icarus.R;
 
 public class LoginActivity extends Activity {
 	

@@ -1,51 +1,35 @@
 package fr.unice.miage.icarus.activities;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.InputStreamEntity;
-import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
 
-import fr.unice.miage.icarus.AsyncHttpPostTask;
-import fr.unice.miage.icarus.FlightSettings;
-import fr.unice.miage.icarus.R;
-import fr.unice.miage.icarus.R.layout;
-import fr.unice.miage.icarus.R.menu;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
-import android.support.v4.os.ParcelableCompat;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
+import fr.unice.miage.icarus.AsyncHttpPostTask;
+import fr.unice.miage.icarus.FlightSettings;
+import fr.unice.miage.icarus.R;
 
 public class TransmissionActivity extends Activity {
 

@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import android.content.Context;
-import android.location.Location;
 import android.util.Log;
 import android.widget.Toast;
 

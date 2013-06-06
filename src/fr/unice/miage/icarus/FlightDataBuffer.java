@@ -2,7 +2,6 @@ package fr.unice.miage.icarus;
 
 import android.content.Context;
 import android.location.Location;
-import android.os.SystemClock;
 
 /**
  * Cette classe représente toutes les données que l'on possède

@@ -2,16 +2,6 @@ package fr.unice.miage.icarus.activities;
 
 
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import fr.unice.miage.icarus.FlightLogger;
-import fr.unice.miage.icarus.FlightSettings;
-import fr.unice.miage.icarus.R;
-import fr.unice.miage.icarus.R.id;
-import fr.unice.miage.icarus.R.layout;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -25,10 +15,13 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import fr.unice.miage.icarus.FlightLogger;
+import fr.unice.miage.icarus.FlightSettings;
+import fr.unice.miage.icarus.R;
 
 public class EnregistrementActivity extends Activity{
 
@@ -117,7 +110,7 @@ public class EnregistrementActivity extends Activity{
 			sm.registerListener(
 					myOriSensorListener, 
 					sm.getDefaultSensor(Sensor.TYPE_ORIENTATION), 
-					sm.SENSOR_DELAY_NORMAL);
+					SensorManager.SENSOR_DELAY_NORMAL);
 		}
 		
 		/*
@@ -131,13 +124,9 @@ public class EnregistrementActivity extends Activity{
 		 * Pression
 		 */
 		if(sm.getDefaultSensor(Sensor.TYPE_PRESSURE) != null){
-			// Nous avons un capteur de pression!
-			flightSettings.setUsePressure(true);
-			Log.d("Icarus", "Utilisation du capteur de pression");
-			
 			sm.registerListener(myPreSensorListener,
 					sm.getDefaultSensor(Sensor.TYPE_PRESSURE),
-					sm.SENSOR_DELAY_NORMAL);
+					SensorManager.SENSOR_DELAY_NORMAL);
 			
 		}
 		
@@ -241,24 +230,21 @@ public class EnregistrementActivity extends Activity{
 	
 	private void updateAltitude(float height){
 		
-		if(flightSettings.usePressure())
+		float altitudeCorrigée = height + flightSettings.getCorrectionAltitude();
+		
+		if(flightSettings.usePressure()){
 			Log.d("Icarus", "Altitude via pression :"+String.format("%.2f", height));
-		else
+			Log.d("Icarus", "Altitude via pression après correction :"+String.format("%.2f", altitudeCorrigée));
+		}
+		else {
 			Log.d("Icarus", "Altitude via gps :"+String.format("%.2f", height));
+			Log.d("Icarus", "Altitude via gps après correction :"+String.format("%.2f", altitudeCorrigée));
+		} 
 		
 		TextView alt = (TextView) findViewById(R.id.textViewAltitude);
-		alt.setText( String.format("%.2f", height));
+		alt.setText( String.format("%.2f", altitudeCorrigée));
 		
-		logger.setAltitude(height);
-	}
-	
-	
-	/**
-	 * Calcule la correction a appliquer a l'altitude
-	 * @param altitudeT0
-	 */
-	private void calcDeltaAltitude(float altitudeT0){
-		
+		logger.setAltitude(altitudeCorrigée);
 	}
 	
 	
@@ -339,7 +325,9 @@ public class EnregistrementActivity extends Activity{
 			 */
 			altitude = SensorManager.getAltitude(flightSettings.getQNH(), pressure_value);
 			
-			updateAltitude(altitude);
+			// Si on utilise le capteur de pression (normalement s'il est dispo, on l'utilise)
+			if(flightSettings.usePressure())
+				updateAltitude(altitude);
 			
 		}
 		

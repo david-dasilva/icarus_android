@@ -2,8 +2,6 @@ package fr.unice.miage.icarus.activities;
 
 import fr.unice.miage.icarus.FlightSettings;
 import fr.unice.miage.icarus.R;
-import fr.unice.miage.icarus.R.id;
-import fr.unice.miage.icarus.R.layout;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,7 +18,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -44,6 +41,8 @@ public class ConfigurationActivity extends Activity {
 	private float currentPitch;
 	private float currentRoll;
 	private float currentAzimuth;
+	private float altitudeP0;
+	private boolean altitudeP0Set = false;
 	
 	private boolean calibrationModePressure = false;
 	
@@ -126,14 +125,6 @@ public class ConfigurationActivity extends Activity {
 		});
 		
 		
-		//TODO Remove this
-		enableRecordingButton();
-		/*
-		 * 
-		 * 
-		 * DEBUG
-		 * 
-		 */
 	}
 
 	@Override
@@ -162,7 +153,21 @@ public class ConfigurationActivity extends Activity {
 			sm.registerListener(
 					myOriSensorListener, 
 					sm.getDefaultSensor(Sensor.TYPE_ORIENTATION), 
-					sm.SENSOR_DELAY_NORMAL);
+					SensorManager.SENSOR_DELAY_NORMAL);
+		}
+		
+		/*
+		 * Pression
+		 */
+		if(sm.getDefaultSensor(Sensor.TYPE_PRESSURE) != null){
+			// Nous avons un capteur de pression!
+			flightSettings.setUsePressure(true);
+			Log.d("Icarus", "Utilisation du capteur de pression");
+			
+			sm.registerListener(myPreSensorListener,
+					sm.getDefaultSensor(Sensor.TYPE_PRESSURE),
+					SensorManager.SENSOR_DELAY_NORMAL);
+
 		}
 		
 		/*
@@ -184,6 +189,13 @@ public class ConfigurationActivity extends Activity {
 		 * Position
 		 */
 		locationManager.removeUpdates(myLocListener);
+		
+		/*
+		 * Pression
+		 */
+		if(sm.getDefaultSensor(Sensor.TYPE_PRESSURE) != null){
+			sm.unregisterListener(myPreSensorListener);
+		}
 	}
 	
 	
@@ -320,8 +332,12 @@ public class ConfigurationActivity extends Activity {
 		final EditText altitudeField	= (EditText)layout.findViewById(R.id.editTextAltitude);
 		final TextView altitudeHint		= (TextView)layout.findViewById(R.id.textViewUnitHint);
 		final RadioGroup rGroup			= (RadioGroup)layout.findViewById(R.id.radioGroupModeCalibration);
-		final RadioButton	rMode		= (RadioButton)rGroup.findViewById(rGroup.getCheckedRadioButtonId());
+		final RadioButton	rPression	= (RadioButton)layout.findViewById(R.id.radioPression);
 		
+		
+		if (!flightSettings.usePressure()){
+			rPression.setEnabled(false);
+		}
 		
 		
 		
@@ -418,7 +434,7 @@ public class ConfigurationActivity extends Activity {
 		if (isPressure){
 			Log.d("Icarus", "Mode de calibration de l'altitude : Pression");
 			// RAZ de la correction par l'altitude
-			flightSettings.setAltitudeReelleInitiale(0.0f);
+			//flightSettings.setAltitudeReelleInitiale(0.0f);
 		}
 		else{
 			Log.d("Icarus", "Mode de calibration de l'altitude : Altitude");
@@ -434,14 +450,50 @@ public class ConfigurationActivity extends Activity {
 		if (this.calibrationModePressure){
 			// On utilise la pression, la valeur est donc le QNH
 			flightSettings.setQNH(value);
-			Log.d("Icarus", "QNH corrigé :"+String.format("%.2f", value));
+			Log.d("Icarus", "QNH réel :"+String.format("%.2f", value));
+			//RAZ de la correction d'altitude en metres
+			flightSettings.setCorrectionAltitude(0.0f);
 		}	
 		else {
 			// On utilise l'altitude en metres, la valeur est donc l'altitude réelle
-			flightSettings.setAltitudeReelleInitiale(value);
-			Log.d("Icarus", "Altitude corrigée :"+String.format("%.2f", value));
+			//flightSettings.setAltitudeReelleInitiale(value);
+			Log.d("Icarus", "Altitude réelle :"+String.format("%.2f", value));
+			calcDeltaAltitude(value);
 		}
 		
+		
+		
+	}
+	
+	private void setAltitudeP0(float altitudeP0){
+		
+		Log.d("Icarus", "Altitude renseignée : "+String.format("%.2f", altitudeP0));
+		this.altitudeP0 = altitudeP0;
+		this.altitudeP0Set= true;
+		
+		/*
+		 * Liberation du listener de pression car il ne sert qu'a ça.
+		 */
+		if(sm.getDefaultSensor(Sensor.TYPE_PRESSURE) != null){
+			sm.unregisterListener(myPreSensorListener);
+		}
+		
+		//calcDeltaAltitude(altitudeP0);
+	}
+	
+	
+	/**
+	 * Calcule la correction a appliquer a l'altitude
+	 * @param altitudeT0 l'altitude au moment du calcul
+	 */
+	private void calcDeltaAltitude(float altitude){
+		float altitudeCapteur = this.altitudeP0;
+		float altitudeReelle = altitude;
+		float deltaAltitude = altitudeReelle - altitudeCapteur;
+		Log.d("Icarus", "altitudeReelle("+String.format("%.2f", altitudeReelle)+") - altitudeCapteur("+String.format("%.2f", altitudeCapteur)+") = deltatAltitude = "+String.format("%.2f", deltaAltitude));
+		Log.d("Icarus", "Delta Altitude : "+String.format("%.2f", deltaAltitude));
+		
+		flightSettings.setCorrectionAltitude(deltaAltitude);
 	}
 	
 	
@@ -516,6 +568,15 @@ public class ConfigurationActivity extends Activity {
 			// On attend d'avoir une position renseignée par le GPS
 			// une fois la position obtenue, on active le bouton
 			enableRecordingButton();
+			
+			// Si l'altitude n'a pas encore été renseignée et
+			// que l'on n'utilise pas l'altitude via la pression
+			if(!altitudeP0Set && !flightSettings.usePressure()){
+				
+				float altitude = (float) location.getAltitude();
+				Log.d("Icarus","GPS fourni l'altitude a T0 : "+String.format("%.2f", altitude));
+				setAltitudeP0(altitude);
+			}
 		}
 		
 		@Override
@@ -526,6 +587,40 @@ public class ConfigurationActivity extends Activity {
 		
 		@Override
 		public void onProviderDisabled(String provider) {}
+	};
+	
+	/**
+	 * Custom Sensor listener for Pressure
+	 */
+	private SensorEventListener myPreSensorListener = new SensorEventListener() {
+		
+		@Override
+		public void onSensorChanged(SensorEvent event) {
+
+			float pressure_value	= 0.0f;
+			float altitude			= 0.0f;
+			// récupération de la valeur de pression actuelle
+			pressure_value = event.values[0];
+			
+			/*
+			 * Calcule la hauteur via la différence entre 2 pressions P0 et P1
+			 * P0 est le QNH. Par defaut c'est la pression atmosphérique moyenne 1013.25hPa
+			 * sauf si l'utilisateur l'a corrigé.
+			 * P1 est la pression actuelle
+			 */
+			altitude = SensorManager.getAltitude(flightSettings.getQNH(), pressure_value);
+			
+			// Si l'altitude initiale n'a pas encore été renseignée :
+			if(!altitudeP0Set){
+				Log.d("Icarus","Capteur de pression fourni l'altitude a T0 : "+String.format("%.2f", altitude));
+				setAltitudeP0(altitude);
+			}
+			
+		}
+		
+		@Override
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		}
 	};
 	
 	

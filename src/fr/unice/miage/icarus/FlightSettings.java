@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.Serializable;
 
 import android.hardware.SensorManager;
-import android.location.LocationManager;
 
 /**
  * Cette classe contient toute la configuration du vol
@@ -12,7 +11,8 @@ import android.location.LocationManager;
  *
  */
 public class FlightSettings implements Serializable{
-	
+
+	private static final long serialVersionUID = 6174330904497507951L;
 	// userid retourné par le serveur
 	private String userid;
 	/*
@@ -31,7 +31,7 @@ public class FlightSettings implements Serializable{
 	/*
 	 * Données de calibrage
 	 */
-	private float	altitudeReelleInitiale;
+	//private float	altitudeReelleInitiale;
 	private float	correctionAltitude;
 	private float	qnh;
 	private float	correctionPitch;
@@ -53,7 +53,7 @@ public class FlightSettings implements Serializable{
 		
 		usePressure = false;
 		
-		altitudeReelleInitiale = 0.0f;
+		//altitudeReelleInitiale = 0.0f;
 		correctionAltitude = 0.0f;    
 		qnh = SensorManager.PRESSURE_STANDARD_ATMOSPHERE;     
 		correctionPitch = 0.0f;   
@@ -179,16 +179,16 @@ public class FlightSettings implements Serializable{
 	 * 
 	 * @return l'altitude initiale réelle spécifiée par l'utilisateur
 	 */
-	public float getAltitudeReelleInitiale(){
-		return this.altitudeReelleInitiale;
-	}
-	
-	/**
-	 * @param alt the altitude to set
-	 */
-	public void setAltitudeReelleInitiale(float alt){
-		this.altitudeReelleInitiale = alt;
-	}
+//	public float getAltitudeReelleInitiale(){
+//		return this.altitudeReelleInitiale;
+//	}
+//	
+//	/**
+//	 * @param alt the altitude to set
+//	 */
+//	public void setAltitudeReelleInitiale(float alt){
+//		this.altitudeReelleInitiale = alt;
+//	}
 
 	/**
 	 * @return the correctionAltitude
