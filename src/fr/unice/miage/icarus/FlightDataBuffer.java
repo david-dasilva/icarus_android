@@ -23,6 +23,8 @@ public abstract class FlightDataBuffer {
 	protected Location	_location;
 	protected boolean	_locationReady;
 	
+	protected float	_altitude;
+	protected boolean	_altitudeReady;
 	
 	protected float	_orix;
 	protected float	_oriy;
@@ -41,6 +43,7 @@ public abstract class FlightDataBuffer {
 		this._timestamp = System.currentTimeMillis();
 		
 		this._locationReady		= false;
+		this._altitudeReady		= false;
 		this._orientationReady	= false;
 	}
 	
@@ -49,6 +52,16 @@ public abstract class FlightDataBuffer {
 		
 		this._location = loc;
 		this._locationReady = true;
+		this._timestamp = System.currentTimeMillis();
+		
+		if(isReady())
+			flush();
+	}
+	
+	public void setAltitude(float height){
+		
+		this._altitude = height;
+		this._altitudeReady = true;
 		this._timestamp = System.currentTimeMillis();
 		
 		if(isReady())
@@ -69,6 +82,7 @@ public abstract class FlightDataBuffer {
 	public void reset(){
 		this._timestamp = System.currentTimeMillis();
 		this._locationReady		= false;
+		this._altitudeReady		= false;
 		this._orientationReady	= false;
 	}
 	
@@ -77,7 +91,8 @@ public abstract class FlightDataBuffer {
 	public boolean isReady(){
 		if ( !_flight.isEmpty() 
 				&& _timestamp != 0.0f
-				&& _locationReady 
+				&& _locationReady
+				&& _altitudeReady
 				&& _orientationReady){
 			return true;
 		}

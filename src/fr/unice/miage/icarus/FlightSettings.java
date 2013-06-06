@@ -25,11 +25,15 @@ public class FlightSettings implements Serializable{
 	private String depart;
 	private String device;
 	private String notes;
+	
+	private boolean usePressure;
+	
 	/*
 	 * Données de calibrage
 	 */
-	private int	correctionAltitude;
-	private float	correctionQNH;
+	private float	altitudeReelleInitiale;
+	private float	correctionAltitude;
+	private float	qnh;
 	private float	correctionPitch;
 	private float	correctionRoll;
 	private float	correctionAzimuth;
@@ -47,8 +51,11 @@ public class FlightSettings implements Serializable{
 		device ="EmptyDevice";
 		notes ="EmptyNotes";
 		
-		correctionAltitude = 0;    
-		correctionQNH = SensorManager.PRESSURE_STANDARD_ATMOSPHERE;     
+		usePressure = false;
+		
+		altitudeReelleInitiale = 0.0f;
+		correctionAltitude = 0.0f;    
+		qnh = SensorManager.PRESSURE_STANDARD_ATMOSPHERE;     
 		correctionPitch = 0.0f;   
 		correctionRoll = 0.0f;    
 		correctionAzimuth = 0.0f;
@@ -168,12 +175,25 @@ public class FlightSettings implements Serializable{
 		this.notes = notes;
 	}
 
-
+	/**
+	 * 
+	 * @return l'altitude initiale réelle spécifiée par l'utilisateur
+	 */
+	public float getAltitudeReelleInitiale(){
+		return this.altitudeReelleInitiale;
+	}
+	
+	/**
+	 * @param alt the altitude to set
+	 */
+	public void setAltitudeReelleInitiale(float alt){
+		this.altitudeReelleInitiale = alt;
+	}
 
 	/**
 	 * @return the correctionAltitude
 	 */
-	public int getCorrectionAltitude() {
+	public float getCorrectionAltitude() {
 		return correctionAltitude;
 	}
 
@@ -182,7 +202,7 @@ public class FlightSettings implements Serializable{
 	/**
 	 * @param correctionAltitude the correctionAltitude to set
 	 */
-	public void setCorrectionAltitude(int correctionAltitude) {
+	public void setCorrectionAltitude(float correctionAltitude) {
 		this.correctionAltitude = correctionAltitude;
 	}
 
@@ -191,8 +211,8 @@ public class FlightSettings implements Serializable{
 	/**
 	 * @return the correctionQNH
 	 */
-	public float getCorrectionQNH() {
-		return correctionQNH;
+	public float getQNH() {
+		return qnh;
 	}
 
 
@@ -200,8 +220,8 @@ public class FlightSettings implements Serializable{
 	/**
 	 * @param correctionQNH the correctionQNH to set
 	 */
-	public void setCorrectionQNH(float correctionQNH) {
-		this.correctionQNH = correctionQNH;
+	public void setQNH(float correctionQNH) {
+		this.qnh = correctionQNH;
 	}
 
 
@@ -274,6 +294,18 @@ public class FlightSettings implements Serializable{
 	 */
 	public void setLogFile(File logFile) {
 		this.logFile = logFile;
+	}
+
+
+
+	public boolean usePressure() {
+		return usePressure;
+	}
+
+
+
+	public void setUsePressure(boolean usePressure) {
+		this.usePressure = usePressure;
 	}
 	
 	

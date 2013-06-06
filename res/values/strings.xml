@@ -59,5 +59,9 @@
     <string name="logon">Se connecter</string>
     <string name="valeur">Valeur</string>
     <string name="currentAzimuth">Cap actuel</string>
+    <string name="hintPressure">Entrer la pression QNH (hPa)</string>
+    <string name="hintAltitude">Entrer l\'altitude actuelle (m)</string>
+    <string name="useAltitude">Utiliser l\'altitude</string>
+    <string name="usePressure">Utiliser la pression</string>
 
 </resources>

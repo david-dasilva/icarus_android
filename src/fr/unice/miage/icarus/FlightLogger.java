@@ -23,6 +23,8 @@ public class FlightLogger extends FlightDataBuffer {
 	private FileOutputStream fOut = null;
 	private OutputStreamWriter osw = null;
 	
+	private boolean usePressure = false;
+	
 	String _author;
 	String _updateFreq; 
 	String _aircraft; 
@@ -37,7 +39,8 @@ public class FlightLogger extends FlightDataBuffer {
 			String aircraft, 
 			String depart, 
 			String device, 
-			String misc){
+			String misc,
+			boolean usePressure){
 		
 		super(ctx, flightName);
 		this._author = author;
@@ -46,6 +49,7 @@ public class FlightLogger extends FlightDataBuffer {
 		this._depart = depart;
 		this._device = device;
 		this._misc = misc;
+		this.usePressure = usePressure;
 		
 		Log.d("Icarus", "FlightLogger Created");
 		
@@ -148,7 +152,12 @@ public class FlightLogger extends FlightDataBuffer {
 		 */
 		String sLat = Double.toString(_location.getLatitude());
 		String sLng = Double.toString(_location.getLongitude());
-		String sAlt = Double.toString(_location.getAltitude());
+		String sAlt;
+		if (usePressure){
+			sAlt = Double.toString(_altitude);
+		} else{
+			sAlt = Double.toString(_location.getAltitude());
+		}
 		String sBearing = Double.toString(_location.getBearing());
 		ligne += "\t\t\t<position>\n";
 		ligne += "\t\t\t\t<lat>"+sLat+"</lat>\n";

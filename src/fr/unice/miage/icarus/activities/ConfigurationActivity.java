@@ -26,6 +26,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -42,6 +44,8 @@ public class ConfigurationActivity extends Activity {
 	private float currentPitch;
 	private float currentRoll;
 	private float currentAzimuth;
+	
+	private boolean calibrationModePressure = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +106,13 @@ public class ConfigurationActivity extends Activity {
 		/*
 		 * Listener bouton Calibrer Altitude
 		 */
-		
+		final Button boutonCalibrerAltitude = (Button)findViewById(R.id.buttonCalibrerAltitude);
+		boutonCalibrerAltitude.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				buildAlertCalibrerAltitude();
+			}
+		});
 		
 		/*
 		 *  Listener pour le bouton "demarrer enregistrement"
@@ -303,6 +313,81 @@ public class ConfigurationActivity extends Activity {
 	}
 	
 	
+	private void buildAlertCalibrerAltitude(){
+		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.altitude_calibration, (ViewGroup)findViewById(R.layout.activity_configuration));
+		
+		final EditText altitudeField	= (EditText)layout.findViewById(R.id.editTextAltitude);
+		final TextView altitudeHint		= (TextView)layout.findViewById(R.id.textViewUnitHint);
+		final RadioGroup rGroup			= (RadioGroup)layout.findViewById(R.id.radioGroupModeCalibration);
+		final RadioButton	rMode		= (RadioButton)rGroup.findViewById(rGroup.getCheckedRadioButtonId());
+		
+		
+		
+		
+		rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				// récuperation du bouton qui a subit un changement
+				RadioButton checkedRadioButton = (RadioButton)rGroup.findViewById(checkedId);
+				if(checkedRadioButton.isChecked()){
+					
+					// bouton "utiliser l'altitude
+					if (checkedId == R.id.radioAltitude){
+						// Changement du texte
+						altitudeHint.setText(getString(R.string.hintAltitude));
+						altitudeField.setText(String.valueOf(flightSettings.getCorrectionAltitude()));
+						setCorrectionModePressure(false);
+					}
+					// bouton "utiliser la pression
+					if (checkedId == R.id.radioPression){
+						// Changement du texte
+						altitudeHint.setText(getString(R.string.hintPressure));
+						altitudeField.setText(String.valueOf(flightSettings.getQNH()));
+						setCorrectionModePressure(true);
+					}
+				}
+			}
+		});
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this)
+										.setView(layout)
+										.setTitle("Calibration de l'Altimètre")
+										.setNegativeButton("Annuler", null)
+										.setPositiveButton("Calibrer", new OnClickListener() {
+											@Override
+											public void onClick(DialogInterface dialog, int which) {
+												String altitudeFieldValue = altitudeField.getText().toString();
+												if(altitudeField.length() > 0){
+													Log.d("Icarus","valeur du champ altitude : "+altitudeFieldValue);
+													
+													float altitude = 0.0f;
+													try {
+														altitude = Float.parseFloat(altitudeFieldValue);
+													} catch (NumberFormatException e){
+														
+													}
+													setCorrectionAltitude(altitude);
+												}
+												
+											}
+										})
+										.setNeutralButton("Re-initialiser", new OnClickListener() {
+											@Override
+											public void onClick(DialogInterface dialog, int which) {
+												setCorrectionModePressure(true);
+												setCorrectionAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE);
+												
+											}
+										});
+		AlertDialog alertDialog = builder.create();
+		alertDialog.show();
+
+		// Déplacer ici listener sur les elements contenus dans le dialog?
+		
+	}
+	
+	
 	/**
 	 * Affiche un message d'alerte si le GPS n'est pas activé et renvoie vers
 	 * les parametres pour le faire.
@@ -326,6 +411,37 @@ public class ConfigurationActivity extends Activity {
 			});
 		final AlertDialog alert = builder.create();
 		alert.show();
+	}
+	
+	private void setCorrectionModePressure(boolean isPressure){
+		this.calibrationModePressure = isPressure;
+		if (isPressure){
+			Log.d("Icarus", "Mode de calibration de l'altitude : Pression");
+			// RAZ de la correction par l'altitude
+			flightSettings.setAltitudeReelleInitiale(0.0f);
+		}
+		else{
+			Log.d("Icarus", "Mode de calibration de l'altitude : Altitude");
+			// RAZ de la correction par la pression
+			flightSettings.setQNH(SensorManager.PRESSURE_STANDARD_ATMOSPHERE);
+		}
+	}
+	
+	
+	
+	private void setCorrectionAltitude(float value){
+		// Detection du mode de calibrage
+		if (this.calibrationModePressure){
+			// On utilise la pression, la valeur est donc le QNH
+			flightSettings.setQNH(value);
+			Log.d("Icarus", "QNH corrigé :"+String.format("%.2f", value));
+		}	
+		else {
+			// On utilise l'altitude en metres, la valeur est donc l'altitude réelle
+			flightSettings.setAltitudeReelleInitiale(value);
+			Log.d("Icarus", "Altitude corrigée :"+String.format("%.2f", value));
+		}
+		
 	}
 	
 	

@@ -63,8 +63,10 @@ public class EnregistrementActivity extends Activity{
 			flightSettings  = (FlightSettings)extras.get("settings");
 		}
 		
-		// FIX: évite de créer plusieurs fois le logger.
-		if (logger == null){
+		/*
+		 * Création du Logger
+		 */
+		if (logger == null){ // FIX: évite de créer plusieurs fois le logger.
 			logger = new FlightLogger(this,
 					flightSettings.getFlightName(),
 					flightSettings.getPilot(),
@@ -72,8 +74,10 @@ public class EnregistrementActivity extends Activity{
 					flightSettings.getAircraft(),
 					flightSettings.getDepart(),
 					flightSettings.getDevice(),
-					flightSettings.getNotes());
+					flightSettings.getNotes(),
+					flightSettings.usePressure());
 		}
+		
 		// Bouton arreter
 		final Button boutonArreter = (Button) findViewById(R.id.buttonStopRecording);
 		boutonArreter.setOnClickListener(new OnClickListener() {
@@ -122,7 +126,21 @@ public class EnregistrementActivity extends Activity{
 		// Register the listener with the Location Manager to receive location updates
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, flightSettings.getUpdateIntervalInMillis(), 0, myLocListener); // GPS
 //		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, updateFrequency, 0, myLocListener); // NETWORK
-		//TODO: disable network for quicker position lock.
+		
+		/*
+		 * Pression
+		 */
+		if(sm.getDefaultSensor(Sensor.TYPE_PRESSURE) != null){
+			// Nous avons un capteur de pression!
+			flightSettings.setUsePressure(true);
+			Log.d("Icarus", "Utilisation du capteur de pression");
+			
+			sm.registerListener(myPreSensorListener,
+					sm.getDefaultSensor(Sensor.TYPE_PRESSURE),
+					sm.SENSOR_DELAY_NORMAL);
+			
+		}
+		
 	}
 	
 	public void unregisterListeners(){
@@ -138,6 +156,13 @@ public class EnregistrementActivity extends Activity{
 		 * Position
 		 */
 		locationManager.removeUpdates(myLocListener);
+		
+		/*
+		 * Pression
+		 */
+		if(sm.getDefaultSensor(Sensor.TYPE_PRESSURE) != null){
+			sm.unregisterListener(myPreSensorListener);
+		}
 	}
 	
 	
@@ -194,6 +219,8 @@ public class EnregistrementActivity extends Activity{
 		
 		logger.setOrientation(correctedAzimuth, correctedPitch, correctedRoll);
 	}
+	
+	
 	/**
 	 * Affiche les valeurs des capteurs de position sur l'écran de test
 	 * @param loc
@@ -208,11 +235,41 @@ public class EnregistrementActivity extends Activity{
 		TextView dir = (TextView) findViewById(R.id.textViewDirection);
 		dir.setText(String.format("%.2f",loc.getBearing()));
 		
-		TextView alt = (TextView) findViewById(R.id.textViewAltitude);
-		alt.setText( String.format("%.2f", loc.getAltitude()));
-		
 		logger.setLocation(loc);
 	}
+	
+	
+	private void updateAltitude(float height){
+		
+		if(flightSettings.usePressure())
+			Log.d("Icarus", "Altitude via pression :"+String.format("%.2f", height));
+		else
+			Log.d("Icarus", "Altitude via gps :"+String.format("%.2f", height));
+		
+		TextView alt = (TextView) findViewById(R.id.textViewAltitude);
+		alt.setText( String.format("%.2f", height));
+		
+		logger.setAltitude(height);
+	}
+	
+	
+	/**
+	 * Calcule la correction a appliquer a l'altitude
+	 * @param altitudeT0
+	 */
+	private void calcDeltaAltitude(float altitudeT0){
+		
+	}
+	
+	
+	/*
+	 * 
+	 * Listeners
+	 * 
+	 */
+	
+	
+	
 	
 	
 	/**
@@ -238,6 +295,12 @@ public class EnregistrementActivity extends Activity{
 		@Override
 		public void onLocationChanged(Location location) {
 			updatePosValues(location);
+			/*
+			 * Si on n'utilise pas le capteur de pression, l'altitude est donnée par le GPS
+			 */
+			if(!flightSettings.usePressure()){
+				updateAltitude((float)location.getAltitude());
+			}
 		}
 		
 		@Override
@@ -252,5 +315,36 @@ public class EnregistrementActivity extends Activity{
 		public void onProviderDisabled(String provider) {
 		}
 		
+	};
+	
+	
+	/**
+	 * Custom Sensor listener for Pressure
+	 */
+	private SensorEventListener myPreSensorListener = new SensorEventListener() {
+		
+		@Override
+		public void onSensorChanged(SensorEvent event) {
+
+			float pressure_value	= 0.0f;
+			float altitude			= 0.0f;
+			// récupération de la valeur de pression actuelle
+			pressure_value = event.values[0];
+			
+			/*
+			 * Calcule la hauteur via la différence entre 2 pressions P0 et P1
+			 * P0 est le QNH. Par defaut c'est la pression atmosphérique moyenne 1013.25hPa
+			 * sauf si l'utilisateur l'a corrigé.
+			 * P1 est la pression actuelle
+			 */
+			altitude = SensorManager.getAltitude(flightSettings.getQNH(), pressure_value);
+			
+			updateAltitude(altitude);
+			
+		}
+		
+		@Override
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		}
 	};
 }
