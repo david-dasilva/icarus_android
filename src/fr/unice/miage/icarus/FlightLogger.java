@@ -105,7 +105,7 @@ public class FlightLogger extends FlightDataBuffer {
 	 */
 	private void ecrireEnteteFichier(){
 		String ligne = "";
-		ligne += "<vol id="+_flight+">\n";
+		ligne += "<vol id=\""+_flight+"\">\n";
 		ligne += "\t<description>\n";
 		ligne += "\t\t<auteur>"+_author+"</auteur>\n";
 		ligne += "\t\t<tempsRecuperation>"+_updateFreq+"</tempsRecuperation>\n";
@@ -144,7 +144,7 @@ public class FlightLogger extends FlightDataBuffer {
 		/*
 		 * Construction de la ligne
 		 */
-		String ligne = "\t\t<mesure time="+_timestamp.toString()+">\n";
+		String ligne = "\t\t<mesure time=\""+_timestamp.toString()+"\">\n";
 		
 		/*
 		 * Position
