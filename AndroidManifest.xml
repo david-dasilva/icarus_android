@@ -29,7 +29,7 @@
         </activity>
         <activity
             android:name="fr.unice.miage.icarus.activities.EnregistrementActivity"
-            android:label="@string/title_activity_test_values" >
+            android:label="@string/title_activity_test_values" android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="fr.unice.miage.icarus.activities.TransmissionActivity"

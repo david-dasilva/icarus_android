@@ -3,7 +3,7 @@
         android:layout_height="match_parent"
         android:layout_margin="5dp"
         android:orientation="vertical"
-        android:stretchColumns="3" >
+        android:stretchColumns="3">
 
         <TableRow
             android:id="@+id/tableRow10"
