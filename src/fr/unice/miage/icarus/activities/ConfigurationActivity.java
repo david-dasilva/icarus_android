@@ -216,8 +216,10 @@ public class ConfigurationActivity extends Activity {
 		final EditText departField = (EditText) findViewById(R.id.editTextDepart);
 		final EditText notesField = (EditText) findViewById(R.id.editTextRemarques);
 		
-		
-		flightSettings.setFlightName(flightNameField.getText().toString());
+		String flightName = flightNameField.getText().toString();
+		if (flightName.equals(""))
+			flightName = "Vol";
+		flightSettings.setFlightName(flightName);
 		flightSettings.setPilot(piloteField.getText().toString());
 		flightSettings.setAircraft(avionField.getText().toString());
 		flightSettings.setDepart(departField.getText().toString());
