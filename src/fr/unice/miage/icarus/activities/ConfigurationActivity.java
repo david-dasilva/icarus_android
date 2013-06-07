@@ -125,6 +125,11 @@ public class ConfigurationActivity extends Activity {
 		});
 		
 		
+		//////////////////////////////////////////
+		//TODO REMOVE THIS
+		//enableRecordingButton();
+		//////////////////////////////////////////
+		
 	}
 
 	@Override
