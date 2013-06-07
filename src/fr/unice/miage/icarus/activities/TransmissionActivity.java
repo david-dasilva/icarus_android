@@ -97,6 +97,17 @@ public class TransmissionActivity extends Activity {
 		});
 		
 		/*
+		 * Enregistrement listener sur slider Visibilité
+		 */
+		final Switch switchVisibility = (Switch)findViewById(R.id.switchVisibility);
+		switchVisibility.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				setVisibility(isChecked);
+			}
+		});
+		
+		/*
 		 * Enregistrement listener sur slider Confidentialité
 		 */
 		final Switch switchPrivacy = (Switch)findViewById(R.id.switchPrivacy);
@@ -138,6 +149,19 @@ public class TransmissionActivity extends Activity {
 				}
 			}
 		});
+		
+		/*
+		 * Désactivation des fonctions d'envoi au serveur il l'application est utilisée sans compte.
+		 */
+		if (flightSettings.getUserid().equals("-1")){
+			// Désactivation du bouton envoyer
+			buttonSendToServer.setEnabled(false);
+			// switches
+			switchPrivacy.setEnabled(false);
+			switchVisibility.setEnabled(false);
+			
+		}
+		
 		
 		// Remplissage de l'url du fichier
 		TextView textViewUrl = (TextView)findViewById(R.id.textViewRecordPath);
@@ -201,6 +225,10 @@ public class TransmissionActivity extends Activity {
 		}
 	}
 	
+	
+	private void setVisibility(boolean visible){
+		this.isVisible = visible;
+	}
 	
 	/**
 	 * Envoie le fichier + quelques parametres au webservice de Dorian

@@ -1,7 +1,9 @@
 package fr.unice.miage.icarus.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +27,7 @@ public class LoginActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login);
 		
-		
+		Log.d("Icarus", "Lancement application Icarus");
 		
 		/*
 		 * Bouton envoyer
@@ -35,6 +37,17 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				obtenirId();
+			}
+		});
+		
+		/*
+		 * Bouton "pas de compte"
+		 */
+		final Button buttonNoAccount = (Button)findViewById(R.id.buttonNoAccount);
+		buttonNoAccount.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				noAccount();
 			}
 		});
 		
@@ -54,6 +67,19 @@ public class LoginActivity extends Activity {
 				return true;
 			}
 		});
+	}
+	
+	/**
+	 * L'application peut être utilisée sans compte. L'id vaut alors -1
+	 */
+	private void noAccount(){
+		Log.d("Icarus","Utilisation sans compte");
+		// Appel de l'activité de configuration
+		Intent configurationIntent = new Intent(this, ConfigurationActivity.class);
+		configurationIntent.putExtra("userid", "-1");
+		
+		startActivity(configurationIntent);
+		finish();
 	}
 	
 	private void obtenirId(){

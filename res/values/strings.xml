@@ -63,5 +63,6 @@
     <string name="hintAltitude">Entrer l\'altitude actuelle (m)</string>
     <string name="useAltitude">Utiliser l\'altitude</string>
     <string name="usePressure">Utiliser la pression</string>
+    <string name="noAccount">Je ne possède pas de compte</string>
 
 </resources>
