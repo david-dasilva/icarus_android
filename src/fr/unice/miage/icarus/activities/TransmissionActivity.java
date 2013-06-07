@@ -34,7 +34,7 @@ import fr.unice.miage.icarus.R;
 public class TransmissionActivity extends Activity {
 
 	private FlightSettings flightSettings;
-	private static final String WEBSERVICE_URL = "http://projetdannee.pardailhan.org/CodeIgniter/index.php/WebService/verificationAjoutVol";
+	private static final String WEBSERVICE_URL = "http://projetdannee.pardailhan.org/index.php/WebService/verificationAjoutVol";
 	private static final String SERVER_URL = "http://projetdannee.pardailhan.org";
 	//private static final String FROM_EMAIL = "contact@daviddasilva.net";
 	

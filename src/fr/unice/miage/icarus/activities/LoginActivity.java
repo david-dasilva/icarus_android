@@ -16,7 +16,7 @@ import fr.unice.miage.icarus.R;
 
 public class LoginActivity extends Activity {
 	
-	private static final String WEBSERVICE_URL = "http://projetdannee.pardailhan.org/CodeIgniter/index.php/WebService/authentification";
+	private static final String WEBSERVICE_URL = "http://projetdannee.pardailhan.org/index.php/WebService/authentification";
 	private AsyncAuthTask asyncTask;
 	
 	@Override
